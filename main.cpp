@@ -21,6 +21,9 @@ int main(int cargs, char *vargs[])
     addr.sin_port             = htons(50000);
     
     bind(handle, (sockaddr*)&addr, sizeof(sockaddr_in)); // failed on < 0
+    
+    DWORD param = 1;
+    ioctlsocket(handle, FIONBIO, &param);   // non-blocking! fails on non-zero
 
     sockaddr_in out_addr, in_addr;
     int in_len = sizeof(sockaddr_in);
