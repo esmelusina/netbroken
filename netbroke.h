@@ -36,10 +36,10 @@ namespace nsfw
         unsigned short port; // e.g. 50000
     public:
         Address() : addr(0), port(0) {}
-        Address(char a, char b, char c, char d, unsigned short p)
+        Address(unsigned char a, unsigned  char b, unsigned  char c, unsigned  char d, unsigned short p)
             : port{p}, addr(NSFW_MAKELONG(a,b,c,d)) {}
 
-        Address(const char *ip) : Address(stoa(ip)){}
+        Address(const char *ip) : Address(stoa(ip)) {}
         Address(const sockaddr_in &addr)
             : port{ntohs(addr.sin_port)}, addr{ntohl(addr.sin_addr.S_un.S_addr)} {}
     
@@ -53,7 +53,7 @@ namespace nsfw
         }
         void toString(char *dst, size_t dlen) const
         {
-            char blah[4] = NSFW_SPLITLONG(addr);
+            unsigned char blah[4] = NSFW_SPLITLONG(addr);
             sprintf_s(dst,dlen,"%hhu.%hhu.%hhu.%hhu:%hu",blah[0],blah[1],blah[2],blah[3],port);
         }                
     };
