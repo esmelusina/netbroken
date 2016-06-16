@@ -35,6 +35,8 @@ namespace nsfw
         unsigned long  addr; // e.g. 00 00 00 00 : 127.0.0.1
         unsigned short port; // e.g. 50000
     public:
+        unsigned long getIPH() const { return addr; }
+
         Address() : addr(0), port(0) {}
         Address(unsigned char a, unsigned  char b, unsigned  char c, unsigned  char d, unsigned short p)
             : port{p}, addr(NSFW_MAKELONG(a,b,c,d)) {}

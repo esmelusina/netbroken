@@ -2,22 +2,23 @@
 
 #include "netbroke.h"
 #include <iostream>
+#include <vector>
+#include <unordered_map>
 
 void main()
 {
     sfwl::initContext();
     nsfw::initNetworking();
-
-    ShipInput  input1, input2,  input3 = {0,0};
-    Ship        ship1,   ship2,  ship3;
     
-    Player    player1;
-    AI        player2;
-    //AI        player3;
+    Player localPlayer;
+    std::vector<Ship>                ships;
+    std::vector<ShipInput>           inputs;
+    std::unordered_map<unsigned long, size_t> connections;
 
-    ship1.color = 0x7700FF;
-    ship2.color = CYAN;
-    ship3.color = GREEN;
+    ships.emplace_back();
+    inputs.emplace_back();
+
+    ships[0].color = 0x7700FF;
 
     nsfw::Socket mysocket;
 
@@ -30,38 +31,39 @@ void main()
     while (sfwl::stepContext())
     {
         float dt = sfwl::getDeltaTime();
-
-        input1 = player1.getInput(ship1);
-        input2 = player2.getInput(ship2);
-
-        ship1.update(dt, input1);
-        ship2.update(dt, input2);
-        ship3.update(dt, input3);
-
-        ship1.draw();
-        ship2.draw();
-        ship3.draw();
+        
+        inputs[0] = localPlayer.getInput(ships[0]);
+        
+        for (size_t i = 0; i < ships.size(); ++i)
+        {
+            ships[i].update(dt, inputs[i]);
+            ships[i].draw();
+        }
 
         Particle::updateAll(dt);
         Particle::drawAll();       
 
 
-        out_data = { sfwl::getTime(), input1, ship1 };       
+        out_data = { sfwl::getTime(), inputs[0], ships[0] };       
 
         mysocket.send((char*)&out_data, sizeof(PACKET), outaddr); // use input1!
                 
-        float latest = 0;
 
         while (mysocket.recv((char*)&in_data, sizeof(PACKET), inaddr))
         {
             mysocket.send((char*)&out_data, sizeof(PACKET), inaddr);
-            if(latest < in_data.time)
-            {                
-                latest = in_data.time;
-                input3 = in_data.input;
-                ship3  = in_data.state;
+            // Asset a new player!
+            if (connections.count(inaddr.getIPH()) == 0)
+            {
+                connections[inaddr.getIPH()] = ships.size();
+                ships.emplace_back();
+                inputs.emplace_back();
             }
-        } 
+
+            size_t current = connections[inaddr.getIPH()];            
+            inputs[current] = in_data.input;
+            ships[current]  = in_data.state;
+        }
     }
 
     mysocket.close();
