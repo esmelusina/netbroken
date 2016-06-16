@@ -10,7 +10,6 @@ struct Controller
 };
 
 
-
 struct Player : public Controller
 {
     char up    = 'W',
