@@ -10,7 +10,9 @@ void main()
 
     ShipInput  input1,  input2;
     Ship        ship1,   ship2;
-    Player    player1, player2;
+    
+    Player    player1;
+    AI        player2;
 
     ship2.color = CYAN;
 
