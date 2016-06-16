@@ -57,4 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="dep\lib\Release\sfwl.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="dep\lib\Debug\sfwl.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+  </ItemGroup>
 </Project>

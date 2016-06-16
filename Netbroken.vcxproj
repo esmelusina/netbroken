@@ -88,6 +88,10 @@
     <ClInclude Include="game\vec3.h" />
     <ClInclude Include="netbroke.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="dep\lib\Debug\sfwl.lib" />
+    <Library Include="dep\lib\Release\sfwl.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
