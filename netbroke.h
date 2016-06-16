@@ -54,7 +54,7 @@ namespace nsfw
         void toString(char *dst, size_t dlen) const
         {
             char blah[4] = NSFW_SPLITLONG(addr);
-            sprintf_s(dst,dlen,"%hhu.%hhu.%hhu.%hhu:%hu",blah[3],blah[2],blah[1],blah[0],port);
+            sprintf_s(dst,dlen,"%hhu.%hhu.%hhu.%hhu:%hu",blah[0],blah[1],blah[2],blah[3],port);
         }                
     };
 

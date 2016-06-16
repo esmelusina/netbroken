@@ -28,8 +28,8 @@ int main(int cargs, char *vargs[])
 
             char buff[256];
             in_addr.toString(buff,256);
-            std::cout << in_pack << " from " << buff << std::endl;
-        }
+            std::cout << in_pack << "  (" << buff << ")" << std::endl;
+        } 
 
     }
 
