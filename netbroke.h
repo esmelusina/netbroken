@@ -14,11 +14,11 @@
 namespace nsfw
 {
     // necessary prerequisites for working with windows networking
-    bool initNetworking() { WSAData data; return WSAStartup(MAKEWORD(2, 2), &data) == 0; }
-    bool termNetworking() {               return WSACleanup()                      == 0; }
+    inline bool initNetworking() { WSAData data; return WSAStartup(MAKEWORD(2, 2), &data) == 0; }
+    inline bool termNetworking() {               return WSACleanup()                      == 0; }
 
     //convert string of format: "127.1.1.0:50000" to sockaddr_in
-    sockaddr_in stoa(const char *src)
+    inline sockaddr_in stoa(const char *src)
     {        
         sockaddr_in dst;        
         dst.sin_family = AF_INET;  
