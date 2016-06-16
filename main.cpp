@@ -12,11 +12,11 @@ int main(int cargs, char *vargs[])
     nsfw::Address out_addr(127,0,0,1,50000);
     nsfw::Address in_addr;
 
-    nsfw::Packet out_pack {0,0, "Dinosaurs!"};
-    nsfw::Packet in_pack;
+    char out_pack[40] {"Dinosaurs!"};
+    char in_pack[40];
     
-    mysocket.send(out_pack, out_addr );
-    mysocket.recv( in_pack, in_addr );
+    mysocket.send(out_pack, 40, out_addr );
+    mysocket.recv( in_pack, 40, in_addr );
 
     mysocket.close();
     nsfw::termNetworking();

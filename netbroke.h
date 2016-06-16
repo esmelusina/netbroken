@@ -22,9 +22,9 @@ namespace nsfw
     {        
         sockaddr_in dst;        
         dst.sin_family = AF_INET;  
-        unsigned char *qtr = (unsigned char*)&dst.sin_addr.S_un.S_addr;
+        unsigned char *qtr = (unsigned char*)&dst.sin_addr.S_un.S_addr; // 00 00
         sscanf_s(src,"%hhu.%hhu.%hhu.%hhu:%hu",qtr,qtr+1,qtr+2,qtr+3,&dst.sin_port);
-                
+
         dst.sin_port = htons(dst.sin_port);
         return dst;
     }
@@ -32,8 +32,8 @@ namespace nsfw
     class Address
     {
         // host format
-        unsigned long  addr;
-        unsigned short port; 
+        unsigned long  addr; // e.g. 00 00 00 00 : 127.0.0.1
+        unsigned short port; // e.g. 50000
     public:
         Address() : addr(0), port(0) {}
         Address(char a, char b, char c, char d, unsigned short p)
@@ -58,12 +58,6 @@ namespace nsfw
         }                
     };
 
-    struct Packet
-    {
-        unsigned long long MS;
-        unsigned long ID;
-        char data[1500];
-    };
 
     class Socket
     {
@@ -106,17 +100,17 @@ namespace nsfw
         }
  
 
-        bool send(const Packet &pack, const Address &addr)
+        bool send(const char *pack, size_t p_len, const Address &addr)
         {
-            return sendto(handle, (char*)&pack, sizeof(Packet), 0, (sockaddr*)&(addr.toN()), sizeof(sockaddr_in)) == sizeof(Packet);
+            return sendto(handle, pack, p_len, 0, (sockaddr*)&(addr.toN()), sizeof(sockaddr_in)) == p_len;
         }
-        bool recv(Packet &pack, Address &addr)
+        bool recv(char *pack, size_t p_len, Address &addr)
         {
             int in_len = sizeof(sockaddr_in);
             sockaddr_in t;
-            int bytes = recvfrom(handle, (char*)&pack, sizeof(Packet), 0, (sockaddr*)&t, &in_len);
+            int bytes = recvfrom(handle, pack, p_len, 0, (sockaddr*)&t, &in_len);
             addr = Address(t);
-            return bytes == sizeof(Packet);
+            return bytes == p_len;
         }
  
    };
